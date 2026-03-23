@@ -77,12 +77,10 @@ const AppContent: React.FC = () => {
   const convertToActive = (amount: number, fromCurrency: Currency): number => {
     if (fromCurrency === currency) return amount;
     
-    // Base is USD for conversion
     let inUSD = amount;
     if (fromCurrency === 'CDF') inUSD = amount / usdToCdfRate;
     if (fromCurrency === 'EUR') inUSD = amount * 1.09; 
 
-    // Now convert USD to active
     if (currency === 'USD') return inUSD;
     if (currency === 'CDF') return inUSD * usdToCdfRate;
     if (currency === 'EUR') return inUSD / 1.09;
@@ -143,7 +141,7 @@ const AppContent: React.FC = () => {
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'saisie', label: 'Saisie Opérations', icon: PlusSquare },
+    { id: 'saisie', label: 'Saisie', icon: PlusSquare },
     { id: 'transactions', label: 'Historique', icon: History },
     { id: 'stocks', label: 'Stocks', icon: Package },
     { id: 'produits', label: 'Catalogue', icon: Settings },
@@ -159,24 +157,37 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex selection:bg-blue-100 dark:selection:bg-blue-900 selection:text-blue-900 dark:selection:text-blue-100 transition-colors duration-300">
+    <div className="min-h-[100dvh] bg-background flex selection:bg-blue-100 dark:selection:bg-blue-900 selection:text-blue-900 dark:selection:text-blue-100 transition-colors duration-300">
       <Toaster position="top-right" richColors />
       
-      {/* Mobile Menu Button */}
-      <button 
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2.5 bg-blue-600 border border-blue-500 rounded-xl shadow-lg text-white active:scale-95 transition-transform"
-      >
-        {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
-      </button>
+      {/* Mobile Header */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-md border-b border-border h-14 flex items-center justify-between px-4">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center shadow-md">
+            <ShieldCheck className="text-white" size={18} />
+          </div>
+          <span className="text-base font-black tracking-tighter">
+            <span className="text-blue-600 dark:text-blue-400">GCash</span>
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+           <ThemeToggle />
+           <button 
+            onClick={() => setIsSidebarOpen(true)}
+            className="p-2 text-muted-foreground hover:text-foreground"
+          >
+            <Menu size={20} />
+          </button>
+        </div>
+      </div>
 
-      {/* Sidebar */}
+      {/* Sidebar / Navigation Drawer */}
       <aside className={`
-        fixed inset-y-0 left-0 z-40 w-72 bg-[#0F172A] dark:bg-[#020617] border-r border-slate-800 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0
+        fixed inset-y-0 left-0 z-[60] w-72 bg-[#0F172A] dark:bg-[#020617] border-r border-slate-800 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         <div className="h-full flex flex-col">
-          <div className="p-8 pb-10">
+          <div className="p-8 pb-10 flex justify-between items-center">
             <h1 className="text-2xl font-black text-white tracking-tighter flex items-center gap-3">
               <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-900/20 ring-4 ring-emerald-500/20">
                 <ShieldCheck className="text-white" size={28} />
@@ -186,9 +197,12 @@ const AppContent: React.FC = () => {
                 <span className="text-blue-400 text-2xl font-black">cash</span>
               </div>
             </h1>
+            <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-slate-400 hover:text-white p-2">
+              <X size={24} />
+            </button>
           </div>
 
-          <nav className="flex-1 px-4 space-y-2 overflow-y-auto">
+          <nav className="flex-1 px-4 space-y-2 overflow-y-auto scrollbar-hide">
             {navItems.map((item) => (
               <button
                 key={item.id}
@@ -249,9 +263,9 @@ const AppContent: React.FC = () => {
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 min-w-0 overflow-auto bg-background transition-colors duration-300">
-        <header className="bg-card/40 dark:bg-card/20 backdrop-blur-xl sticky top-0 z-30 border-b border-border p-5 lg:px-12 flex justify-between items-center shadow-sm">
+      {/* Main Content Area */}
+      <main className="flex-1 min-w-0 overflow-auto bg-background transition-colors duration-300 pt-14 lg:pt-0">
+        <header className="bg-card/40 dark:bg-card/20 backdrop-blur-xl sticky top-0 z-30 border-b border-border p-4 lg:p-5 lg:px-12 flex justify-between items-center shadow-sm">
           <div className="hidden lg:block">
             <div className="flex items-center gap-3">
               <div className="p-2.5 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-md shadow-blue-200 dark:shadow-blue-900/40">
@@ -273,39 +287,42 @@ const AppContent: React.FC = () => {
             <div className="flex flex-col items-end">
               <div className="flex items-center gap-2 mb-1">
                 <Banknote size={14} className="text-emerald-600 dark:text-emerald-500" />
-                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Solde Consolidé</span>
+                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest hidden sm:inline">Solde Consolidé</span>
+                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest sm:hidden">Solde</span>
               </div>
               <div className="flex items-baseline gap-2">
-                <span className={`text-2xl font-black tabular-nums ${stats.currentBalance >= 0 ? 'text-blue-700 dark:text-blue-400' : 'text-rose-600 dark:text-rose-400'}`}>
+                <span className={`text-xl lg:text-2xl font-black tabular-nums ${stats.currentBalance >= 0 ? 'text-blue-700 dark:text-blue-400' : 'text-rose-600 dark:text-rose-400'}`}>
                   {stats.currentBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </span>
                 <span className="text-xs font-black text-muted-foreground">{currency}</span>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <ThemeToggle />
-              <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-white shadow-xl shadow-emerald-200 dark:shadow-emerald-900/40 ring-4 ring-emerald-50 dark:ring-emerald-950 cursor-pointer hover:scale-105 transition-transform">
-                <Wallet size={24} className="lg:size-7" />
+              <div className="hidden lg:block">
+                <ThemeToggle />
+              </div>
+              <div className="w-10 h-10 lg:w-14 lg:h-14 rounded-xl lg:rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-white shadow-xl shadow-emerald-200 dark:shadow-emerald-900/40 ring-2 lg:ring-4 ring-emerald-50 dark:ring-emerald-950 cursor-pointer hover:scale-105 transition-transform">
+                <Wallet size={20} className="lg:size-7" />
               </div>
             </div>
           </div>
         </header>
 
-        <div className="p-6 lg:p-12 max-w-[1600px] mx-auto space-y-10">
+        <div className="p-4 lg:p-8 xl:p-12 max-w-[1600px] mx-auto space-y-6 lg:space-y-10 pb-24 lg:pb-12">
           {activeTab === 'dashboard' && (
-            <div className="animate-in fade-in slide-in-from-bottom-6 duration-700">
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
               <StatsGrid stats={stats} />
             </div>
           )}
 
           {activeTab === 'saisie' && (
-            <div className="max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-700">
+            <div className="max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
               <TransactionForms onTransactionAdded={fetchData} selectedCurrency={currency} />
             </div>
           )}
 
           {activeTab === 'transactions' && (
-            <div className="space-y-12 animate-in fade-in slide-in-from-bottom-6 duration-700">
+            <div className="space-y-8 lg:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <HistoryTable 
                 transactions={filteredSales} 
                 title={`Ventes (${currency})`} 
@@ -316,11 +333,11 @@ const AppContent: React.FC = () => {
                 title={`Dépenses (${currency})`} 
                 type="expense"
               />
-              <div className="bg-gradient-to-r from-emerald-600 to-blue-600 p-8 rounded-[2.5rem] shadow-xl shadow-blue-100 dark:shadow-blue-900/20 flex items-center justify-between text-white relative overflow-hidden group">
+              <div className="bg-gradient-to-r from-emerald-600 to-blue-600 p-6 lg:p-8 rounded-2xl lg:rounded-[2.5rem] shadow-xl shadow-blue-100 dark:shadow-blue-900/20 flex flex-col md:flex-row items-center justify-between text-white relative overflow-hidden group gap-6">
                 <div className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-1000" />
-                <div className="relative z-10">
-                  <h3 className="text-xl font-black mb-2">Note Multi-Devise</h3>
-                  <p className="text-emerald-50 font-medium max-w-lg">
+                <div className="relative z-10 text-center md:text-left">
+                  <h3 className="text-lg lg:text-xl font-black mb-2 uppercase tracking-tight">Note Multi-Devise</h3>
+                  <p className="text-emerald-50 text-xs lg:text-sm font-medium max-w-lg leading-relaxed text-balance">
                     Toutes les dépenses effectuées en CDF ou EUR sont automatiquement converties selon le taux d'échange pour impacter votre solde global en USD.
                   </p>
                 </div>
@@ -330,23 +347,45 @@ const AppContent: React.FC = () => {
           )}
 
           {activeTab === 'stocks' && (
-            <div className="animate-in fade-in slide-in-from-bottom-6 duration-700">
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
               <StockManagement />
             </div>
           )}
 
           {activeTab === 'produits' && (
-            <div className="animate-in fade-in slide-in-from-bottom-6 duration-700">
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
               <ProductsTable />
             </div>
           )}
         </div>
       </main>
 
+      {/* Mobile Bottom Navigation */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-xl border-t border-border pb-safe">
+        <div className="grid grid-cols-5 h-16">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={`flex flex-col items-center justify-center gap-1 transition-all ${
+                activeTab === item.id 
+                ? 'text-blue-600 dark:text-blue-400' 
+                : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <div className={`p-1.5 rounded-xl transition-colors ${activeTab === item.id ? 'bg-blue-600/10' : ''}`}>
+                <item.icon size={20} strokeWidth={activeTab === item.id ? 2.5 : 2} />
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-tighter">{item.label === 'Saisie Opérations' ? 'Saisie' : item.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-30 lg:hidden"
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[50] lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}

@@ -15,7 +15,8 @@ import {
   CheckCircle2, 
   ShieldCheck, 
   Info,
-  ArrowRight
+  ArrowRight,
+  ChevronRight
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useExchangeRate } from '../../context/ExchangeRateContext';
@@ -191,86 +192,86 @@ export const TransactionForms: React.FC<TransactionFormsProps> = ({
       : (Number(expenseData.amount) * 1.09);
 
   return (
-    <div className="space-y-8 py-4">
-      <div className="flex bg-blue-900/10 dark:bg-blue-900/20 p-2 rounded-[2.5rem] w-full border border-blue-200 dark:border-blue-900 shadow-inner backdrop-blur-sm">
+    <div className="space-y-6 lg:space-y-8 py-2 pb-safe">
+      <div className="flex flex-row bg-blue-900/10 dark:bg-blue-900/20 p-1.5 rounded-2xl lg:rounded-[2.5rem] w-full border border-blue-200 dark:border-blue-900 shadow-inner backdrop-blur-sm gap-1.5">
         <button
           onClick={() => setActiveForm('sale')}
-          className={`flex-1 flex items-center justify-center gap-2 py-4 rounded-[2rem] font-black transition-all duration-300 ${
+          className={`flex-1 flex items-center justify-center gap-2 py-4 lg:py-6 rounded-xl lg:rounded-[2rem] font-black transition-all duration-300 ${
             activeForm === 'sale' 
             ? 'bg-gradient-to-r from-blue-600 to-blue-500 shadow-xl shadow-blue-200 dark:shadow-blue-900 text-white' 
             : 'text-blue-600/60 dark:text-blue-400/60 hover:text-blue-600 dark:hover:text-blue-400'
           }`}
         >
-          <PlusCircle size={20} />
-          Enregistrer Vente
+          <PlusCircle size={20} className="shrink-0" />
+          <span className="text-xs lg:text-base">Vente</span>
         </button>
         <button
           onClick={() => setActiveForm('expense')}
-          className={`flex-1 flex items-center justify-center gap-2 py-4 rounded-[2rem] font-black transition-all duration-300 ${
+          className={`flex-1 flex items-center justify-center gap-2 py-4 lg:py-6 rounded-xl lg:rounded-[2rem] font-black transition-all duration-300 ${
             activeForm === 'expense' 
             ? 'bg-gradient-to-r from-rose-600 to-rose-500 shadow-xl shadow-rose-200 dark:shadow-rose-900 text-white' 
             : 'text-rose-600/60 dark:text-rose-400/60 hover:text-rose-600 dark:hover:text-rose-400'
           }`}
         >
-          <MinusCircle size={20} />
-          Enregistrer Dépense
+          <MinusCircle size={20} className="shrink-0" />
+          <span className="text-xs lg:text-base">Dépense</span>
         </button>
       </div>
 
-      <Card className="border-none shadow-2xl shadow-blue-900/10 dark:shadow-slate-900/50 bg-card/80 dark:bg-card/40 backdrop-blur-md rounded-[3rem] overflow-hidden border border-border">
-        <CardHeader className="p-10 pb-6">
-          <CardTitle className={`text-2xl font-black flex items-center gap-4 ${activeForm === 'sale' ? 'text-blue-600 dark:text-blue-400' : 'text-rose-600 dark:text-rose-400'}`}>
-            <div className={`p-4 rounded-2xl ${activeForm === 'sale' ? 'bg-blue-100/50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20' : 'bg-rose-100/50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/20'}`}>
-              {activeForm === 'sale' ? <Receipt size={28} /> : <CreditCard size={28} />}
+      <Card className="border-none shadow-2xl shadow-blue-900/10 dark:shadow-slate-900/50 bg-card/80 dark:bg-card/40 backdrop-blur-md rounded-2xl lg:rounded-[3rem] overflow-hidden border border-border">
+        <CardHeader className="p-6 lg:p-10 pb-4 lg:pb-6">
+          <CardTitle className={`text-xl lg:text-2xl font-black flex items-center gap-4 ${activeForm === 'sale' ? 'text-blue-600 dark:text-blue-400' : 'text-rose-600 dark:text-rose-400'}`}>
+            <div className={`p-3 lg:p-4 rounded-xl lg:rounded-2xl ${activeForm === 'sale' ? 'bg-blue-100/50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20' : 'bg-rose-100/50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/20'}`}>
+              {activeForm === 'sale' ? <Receipt className="w-6 h-6 lg:w-7 lg:h-7" /> : <CreditCard className="w-6 h-6 lg:w-7 lg:h-7" />}
             </div>
             <div>
-              <span className="block">{activeForm === 'sale' ? 'Nouvelle Vente' : 'Nouvelle Dépense'}</span>
-              <span className="text-sm font-bold text-muted-foreground tracking-tight block mt-1 uppercase">
+              <span className="block text-lg lg:text-xl font-black">{activeForm === 'sale' ? 'Nouvelle Vente' : 'Nouvelle Dépense'}</span>
+              <span className="text-[10px] lg:text-xs font-bold text-muted-foreground tracking-tight block mt-1 uppercase">
                 {activeForm === 'sale' ? `Transaction en ${selectedCurrency}` : 'Opération Sortie de Caisse'}
               </span>
             </div>
           </CardTitle>
         </CardHeader>
         
-        <CardContent className="p-10 pt-0">
-          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent w-full mb-10" />
+        <CardContent className="p-6 lg:p-10 pt-0">
+          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent w-full mb-8 lg:mb-10" />
           
           {activeForm === 'sale' ? (
-            <form onSubmit={handleSaleSubmit} className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 ml-1 block">Produit</label>
+            <form onSubmit={handleSaleSubmit} className="space-y-6 lg:space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 lg:gap-x-10 gap-y-6 lg:gap-y-8">
+                <div className="space-y-2 lg:space-y-3">
+                  <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 ml-1 block">Produit</label>
                   <div className="relative group">
                     <Package className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-400 group-focus-within:text-blue-600 transition-colors" size={20} />
                     <select
                       required
-                      className="flex h-14 w-full rounded-2xl border border-border bg-muted/30 pl-12 pr-4 py-2 text-sm font-bold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all appearance-none text-foreground"
+                      className="flex h-12 lg:h-14 w-full rounded-xl lg:rounded-2xl border border-border bg-muted/30 pl-11 pr-4 py-2 text-sm font-bold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all appearance-none text-foreground"
                       value={saleData.product_id}
                       onChange={(e) => handleProductChange(e.target.value)}
                     >
                       <option value="">Sélectionner un produit...</option>
                       {products.map(p => (
-                        <option key={p.id} value={p.id} className="text-slate-900">{p.name} ({p.unit_price} {p.currency || 'USD'})</option>
+                        <option key={p.id} value={p.id}>{p.name} ({p.unit_price} {p.currency || 'USD'})</option>
                       ))}
                     </select>
                   </div>
                 </div>
                 
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 ml-1 block">Quantité</label>
+                <div className="space-y-2 lg:space-y-3">
+                  <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 ml-1 block">Quantité</label>
                   <Input
                     type="number"
                     min="1"
                     required
                     value={saleData.quantity}
                     onChange={(e) => handleQuantityChange(e.target.value)}
-                    className="h-14 rounded-2xl bg-muted/30 border-border font-bold focus:ring-blue-500"
+                    className="h-12 lg:h-14 rounded-xl lg:rounded-2xl bg-muted/30 border-border font-bold focus:ring-blue-500 text-base"
                     placeholder="1"
                   />
                 </div>
 
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 ml-1 block">Montant ({selectedCurrency})</label>
+                <div className="space-y-2 lg:space-y-3">
+                  <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 ml-1 block">Montant ({selectedCurrency})</label>
                   <div className="relative group">
                     <Wallet2 className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-500 dark:text-blue-300" size={20} />
                     <Input
@@ -279,16 +280,16 @@ export const TransactionForms: React.FC<TransactionFormsProps> = ({
                       required
                       value={saleData.amount}
                       onChange={(e) => setSaleData({ ...saleData, amount: e.target.value })}
-                      className="h-14 pl-12 rounded-2xl bg-blue-600 text-white font-black text-xl focus:ring-blue-400 shadow-lg shadow-blue-200 dark:shadow-blue-900/40 border-none"
+                      className="h-12 lg:h-14 pl-11 rounded-xl lg:rounded-2xl bg-blue-600 text-white font-black text-xl lg:text-2xl focus:ring-blue-400 shadow-lg shadow-blue-200 dark:shadow-blue-900/40 border-none"
                       placeholder="0.00"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 ml-1 block">Méthode</label>
+                <div className="space-y-2 lg:space-y-3">
+                  <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 ml-1 block">Méthode</label>
                   <select
-                    className="flex h-14 w-full rounded-2xl border border-border bg-muted/30 px-4 py-2 text-sm font-bold appearance-none focus:ring-blue-500 transition-all text-foreground"
+                    className="flex h-12 lg:h-14 w-full rounded-xl lg:rounded-2xl border border-border bg-muted/30 px-4 py-2 text-sm font-bold appearance-none focus:ring-blue-500 transition-all text-foreground"
                     value={saleData.payment_method}
                     onChange={(e) => setSaleData({ ...saleData, payment_method: e.target.value })}
                   >
@@ -299,24 +300,24 @@ export const TransactionForms: React.FC<TransactionFormsProps> = ({
                   </select>
                 </div>
 
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 ml-1 block">Date</label>
+                <div className="space-y-2 lg:space-y-3">
+                  <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 ml-1 block">Date</label>
                   <Input
                     type="date"
                     required
                     value={saleData.date}
                     onChange={(e) => setSaleData({ ...saleData, date: e.target.value })}
-                    className="h-14 rounded-2xl bg-muted/30 border-border font-bold"
+                    className="h-12 lg:h-14 rounded-xl lg:rounded-2xl bg-muted/30 border-border font-bold text-sm"
                   />
                 </div>
 
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 ml-1 block">Notes</label>
+                <div className="space-y-2 lg:space-y-3">
+                  <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 ml-1 block">Notes</label>
                   <Input
                     placeholder="Description libre..."
                     value={saleData.description}
                     onChange={(e) => setSaleData({ ...saleData, description: e.target.value })}
-                    className="h-14 rounded-2xl bg-muted/30 border-border font-bold"
+                    className="h-12 lg:h-14 rounded-xl lg:rounded-2xl bg-muted/30 border-border font-bold text-sm"
                   />
                 </div>
               </div>
@@ -324,42 +325,42 @@ export const TransactionForms: React.FC<TransactionFormsProps> = ({
               <Button 
                 type="submit" 
                 disabled={loading} 
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-black h-16 rounded-[1.5rem] transition-all active:scale-95 shadow-xl shadow-blue-200 dark:shadow-blue-900/40 mt-6 text-lg gap-3"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-black h-14 lg:h-16 rounded-xl lg:rounded-[1.5rem] transition-all active:scale-95 shadow-xl shadow-blue-200 dark:shadow-blue-900/40 mt-6 lg:mt-8 text-base lg:text-lg gap-3"
               >
-                {loading ? 'Traitement en cours...' : <><CheckCircle2 size={24} /> Enregistrer la Vente</>}
+                {loading ? 'Traitement...' : <><CheckCircle2 size={22} /> Enregistrer la Vente</>}
               </Button>
             </form>
           ) : (
-            <form onSubmit={handleExpenseSubmit} className="space-y-8">
+            <form onSubmit={handleExpenseSubmit} className="space-y-6 lg:space-y-8">
               <div className="space-y-6">
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-rose-600 dark:text-rose-400 ml-1 block">Nature de la dépense</label>
+                <div className="space-y-2 lg:space-y-3">
+                  <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-rose-600 dark:text-rose-400 ml-1 block">Nature de la dépense</label>
                   <Input
                     required
-                    placeholder="Ex: Carburant, Loyer, Facture SNEL..."
+                    placeholder="Ex: Carburant, Loyer..."
                     value={expenseData.description}
                     onChange={(e) => setExpenseData({ ...expenseData, description: e.target.value })}
-                    className="h-16 rounded-2xl bg-muted/30 border-border font-bold focus:ring-rose-500 text-lg"
+                    className="h-14 lg:h-16 rounded-xl lg:rounded-2xl bg-muted/30 border-border font-bold focus:ring-rose-500 text-base lg:text-lg"
                   />
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-rose-600 dark:text-rose-400 ml-1 block">Montant & Devise</label>
-                    <div className="flex gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                  <div className="space-y-2 lg:space-y-3">
+                    <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-rose-600 dark:text-rose-400 ml-1 block">Montant & Devise</label>
+                    <div className="flex gap-2 lg:gap-3">
                       <Input
                         type="number"
                         step="0.01"
                         required
                         value={expenseData.amount}
                         onChange={(e) => setExpenseData({ ...expenseData, amount: e.target.value })}
-                        className="h-14 rounded-2xl bg-rose-600 text-white font-black text-xl focus:ring-rose-400 flex-1 shadow-lg shadow-rose-200 dark:shadow-rose-900/40 border-none"
+                        className="h-12 lg:h-14 rounded-xl lg:rounded-2xl bg-rose-600 text-white font-black text-xl lg:text-2xl focus:ring-rose-400 flex-1 shadow-lg shadow-rose-200 dark:shadow-rose-900/40 border-none"
                         placeholder="0.00"
                       />
                       <select
                         value={expenseData.currency}
                         onChange={(e) => setExpenseData({ ...expenseData, currency: e.target.value as Currency })}
-                        className="h-14 px-6 rounded-2xl bg-card border border-border font-black text-sm focus:ring-rose-500 shadow-sm text-foreground"
+                        className="h-12 lg:h-14 px-3 lg:px-6 rounded-xl lg:rounded-2xl bg-card border border-border font-black text-[10px] lg:text-xs focus:ring-rose-500 shadow-sm text-foreground"
                       >
                         <option value="USD">USD</option>
                         <option value="CDF">CDF</option>
@@ -368,32 +369,32 @@ export const TransactionForms: React.FC<TransactionFormsProps> = ({
                     </div>
                   </div>
 
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-rose-600 dark:text-rose-400 ml-1 block">Date</label>
+                  <div className="space-y-2 lg:space-y-3">
+                    <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-rose-600 dark:text-rose-400 ml-1 block">Date</label>
                     <Input
                       type="date"
                       required
                       value={expenseData.date}
                       onChange={(e) => setExpenseData({ ...expenseData, date: e.target.value })}
-                      className="h-14 rounded-2xl bg-muted/30 border-border font-bold"
+                      className="h-12 lg:h-14 rounded-xl lg:rounded-2xl bg-muted/30 border-border font-bold text-sm"
                     />
                   </div>
                 </div>
 
                 {expenseData.amount && expenseData.currency !== 'USD' && (
-                  <div className="bg-blue-600/10 dark:bg-blue-500/10 p-6 rounded-[2rem] border border-blue-200 dark:border-blue-500/20 flex items-center gap-6 animate-in fade-in zoom-in duration-300 backdrop-blur-sm">
-                    <div className="w-12 h-12 bg-card rounded-xl flex items-center justify-center shadow-sm">
-                       <ShieldCheck className="text-blue-600 dark:text-blue-400" size={24} />
+                  <div className="bg-blue-600/10 dark:bg-blue-500/10 p-5 lg:p-6 rounded-2xl lg:rounded-[2rem] border border-blue-200 dark:border-blue-500/20 flex items-center gap-4 lg:gap-6 animate-in fade-in zoom-in duration-300 backdrop-blur-sm">
+                    <div className="w-12 h-12 lg:w-14 lg:h-14 bg-card rounded-xl lg:rounded-2xl flex items-center justify-center shadow-sm shrink-0">
+                       <ShieldCheck className="text-blue-600 dark:text-blue-400 w-6 h-6 lg:w-7 lg:h-7" />
                     </div>
-                    <div className="flex-1">
-                      <p className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-1">Impact sur le solde USD</p>
-                      <div className="flex items-center gap-3">
-                        <span className="font-bold text-muted-foreground text-sm">{Number(expenseData.amount).toLocaleString()} {expenseData.currency}</span>
-                        <ArrowRight size={14} className="text-blue-300" />
-                        <span className="font-black text-blue-700 dark:text-blue-400 text-lg">-{calculatedUsdEquivalent.toLocaleString(undefined, { maximumFractionDigits: 2 })} USD</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[9px] lg:text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-1 truncate">Impact sur le solde USD</p>
+                      <div className="flex items-center gap-2 lg:gap-3">
+                        <span className="font-bold text-muted-foreground text-xs lg:text-sm truncate">{Number(expenseData.amount).toLocaleString()} {expenseData.currency}</span>
+                        <ArrowRight size={12} className="text-blue-300 shrink-0" />
+                        <span className="font-black text-blue-700 dark:text-blue-400 text-lg lg:text-xl whitespace-nowrap">-{calculatedUsdEquivalent.toLocaleString(undefined, { maximumFractionDigits: 2 })} USD</span>
                       </div>
                     </div>
-                    <Info className="text-blue-400" size={20} />
+                    <Info className="text-blue-400 hidden sm:block" size={20} />
                   </div>
                 )}
               </div>
@@ -401,9 +402,9 @@ export const TransactionForms: React.FC<TransactionFormsProps> = ({
               <Button 
                 type="submit" 
                 disabled={loading} 
-                className="w-full bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 text-white font-black h-16 rounded-[1.5rem] transition-all active:scale-95 shadow-xl shadow-rose-200 dark:shadow-rose-900/40 mt-6 text-lg gap-3"
+                className="w-full bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 text-white font-black h-14 lg:h-16 rounded-xl lg:rounded-[1.5rem] transition-all active:scale-95 shadow-xl shadow-rose-200 dark:shadow-rose-900/40 mt-6 lg:mt-8 text-base lg:text-lg gap-3"
               >
-                {loading ? 'Traitement...' : <><CheckCircle2 size={24} /> Valider la Dépense</>}
+                {loading ? 'Traitement...' : <><CheckCircle2 size={22} /> Valider la Dépense</>}
               </Button>
             </form>
           )}
